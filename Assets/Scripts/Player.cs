@@ -10,11 +10,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LayerMask _groundLayer;
     private bool _resetJump = false;
+    private bool _grounded = false;
+    private PlayerAnimation _anim;
 
     // Start is called before the first frame update
     void Start()
     {
         _rigid = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<PlayerAnimation>();
     }
 
     // Update is called once per frame
@@ -27,20 +30,18 @@ public class Player : MonoBehaviour
     {
         float walk = Input.GetAxisRaw("Horizontal") * speed;
 
-        // Apply horizontal movement with speed
-        _rigid.velocity = new Vector2(walk, _rigid.velocity.y);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            print("spacebar");
-        }
-
+        _grounded = IsGrounded();
+       
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
-            Debug.Log("Jump"); // To verify jump is being triggered
             _rigid.velocity = new Vector2(_rigid.velocity.x, _jumpForce); // Apply jump force
+            _anim.Jump(true);
             StartCoroutine(ResetJumpRoutine()); // Prevent immediate multiple jumps
         }
+
+        _rigid.velocity = new Vector2(walk, _rigid.velocity.y);
+
+        _anim.Move(walk);
     }
 
     bool IsGrounded()
@@ -48,20 +49,16 @@ public class Player : MonoBehaviour
         // Cast a ray slightly below the player's feet to detect the ground
         Vector2 position = transform.position;
         RaycastHit2D hitInfo = Physics2D.Raycast(position, Vector2.down, 1.0f, _groundLayer);
-        Debug.DrawRay(position, Vector2.down * 1.0f, Color.red); // Visualize in Scene view
+        Debug.DrawRay(position, Vector2.down, Color.green); // Visualize in Scene view
 
 
         if (hitInfo.collider != null)
         {
-            Debug.Log("Ground hit: " + hitInfo.collider.name); // Log the name of the object hit
             if (!_resetJump)
             {
+                _anim.Jump(false);
                 return true;
             }
-        }
-        else
-        {
-            Debug.Log("Raycast did not hit any ground");
         }
 
         return false;
