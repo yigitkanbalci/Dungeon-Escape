@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagable
 {
+    public int Health { get; set; }
+
+    [SerializeField]
+    private int health;
     private Rigidbody2D _rigid;
     private float _jumpForce = 6.0f;
     [SerializeField]
@@ -24,6 +28,8 @@ public class Player : MonoBehaviour
         _anim = GetComponent<PlayerAnimation>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _swordArcRenderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        _rigid.velocity = Vector2.zero;
+        Health = health;
 
     }
 
@@ -36,6 +42,19 @@ public class Player : MonoBehaviour
         {
             _anim.Attack();
         }
+    }
+
+    public void Damage()
+    {
+        print("Health: " + Health);
+        Health--;
+        //Play hit animation
+        //check health, kill player if less than 0,
+        if (Health < 1)
+        {
+            Destroy(this.gameObject);
+        }
+        //gameover display
     }
 
     void MoveCharacter()
@@ -69,7 +88,7 @@ public class Player : MonoBehaviour
         // Cast a ray slightly below the player's feet to detect the ground
         Vector2 position = transform.position;
         RaycastHit2D hitInfo = Physics2D.Raycast(position, Vector2.down, 1.0f, _groundLayer);
-        Debug.DrawRay(position, Vector2.down, Color.green); // Visualize in Scene view
+        Debug.DrawRay(position, Vector2.down, Color.green); 
 
         if (hitInfo.collider != null)
         {
@@ -94,6 +113,8 @@ public class Player : MonoBehaviour
             Vector3 newPos = _swordArcRenderer.transform.localPosition;
             newPos.x = -1.01f;
             _swordArcRenderer.transform.localPosition = newPos;
+
+            _swordArcRenderer.transform.localRotation = Quaternion.Euler(106f, 0f, 0f);
         }
         else
         {
@@ -104,6 +125,8 @@ public class Player : MonoBehaviour
             Vector3 newPos = _swordArcRenderer.transform.localPosition;
             newPos.x = 1.01f;
             _swordArcRenderer.transform.localPosition = newPos;
+
+            _swordArcRenderer.transform.localRotation = Quaternion.Euler(66f, 0f, 0f);
 
         }
     }
