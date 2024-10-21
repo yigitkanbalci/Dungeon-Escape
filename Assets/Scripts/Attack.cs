@@ -29,7 +29,7 @@ public class Attack : MonoBehaviour
     private IEnumerator AttackCooldown()
     {
         // Wait for 1 second before resetting the attack.
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
 
         // Reset attack state.
         canAttack = true;

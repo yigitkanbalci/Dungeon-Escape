@@ -83,6 +83,7 @@ public class Enemy : MonoBehaviour
         if (player != null)
         {
             float distance = Vector3.Distance(player.transform.position, transform.position);
+       
             if (distance > 2.0f)
             {
                 isHit = false;

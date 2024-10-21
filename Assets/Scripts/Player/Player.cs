@@ -52,7 +52,8 @@ public class Player : MonoBehaviour, IDamagable
         //check health, kill player if less than 0,
         if (Health < 1)
         {
-            Destroy(this.gameObject);
+            _anim.Death();
+            Destroy(this.gameObject, 1.1f);
         }
         //gameover display
     }
