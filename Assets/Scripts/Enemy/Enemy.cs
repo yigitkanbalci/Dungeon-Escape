@@ -86,6 +86,7 @@ public class Enemy : MonoBehaviour
        
             if (distance > 2.0f)
             {
+                
                 isHit = false;
                 anim.SetBool("InCombat", false);
             }

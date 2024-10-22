@@ -7,6 +7,8 @@ public class Spider : Enemy, IDamagable
     public int Health { get; set; }
 
     public GameObject acidEffectPrefab;
+    public float attackCooldown = 2f; // Time between attacks
+    private float lastAttackTime = 0f; // Time when the last attack happened
 
     public void Damage()
     {
@@ -27,6 +29,8 @@ public class Spider : Enemy, IDamagable
     {
         base.Init();
         Health = base.health;
+        lastAttackTime = -attackCooldown; // Allow immediate first attack
+
     }
 
     public override void Attack()
@@ -77,10 +81,23 @@ public class Spider : Enemy, IDamagable
             {
                 anim.SetTrigger("Idle");
                 anim.SetBool("InCombat", true);
+                isHit = true;
+                TryAttack();
+                
             }
 
             if (anim.GetBool("InCombat"))
             {
+                if (Time.time >= lastAttackTime + attackCooldown) // Attack only after cooldown
+                {
+                    anim.SetBool("Cooldown", false); ; // Trigger the attack animation
+                    lastAttackTime = Time.time; // Record the attack time
+                } else
+                {
+                    anim.SetBool("Cooldown", true);
+                    anim.SetTrigger("Idle");
+                }
+
                 if (transform.position.x > player.transform.position.x)
                 {
                     sprite.flipX = true;
@@ -90,6 +107,15 @@ public class Spider : Enemy, IDamagable
                     sprite.flipX = false;
                 }
             }
+        }
+    }
+
+    private void TryAttack()
+    {
+        if (Time.time >= lastAttackTime + attackCooldown)
+        {
+            lastAttackTime = Time.time; // Record the time of this attack
+            anim.Play("Attack"); // Play the attack animation
         }
     }
 }
