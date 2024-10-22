@@ -17,6 +17,7 @@ public class Skeleton : Enemy, IDamagable
         if (Health < 1)
         {
             anim.SetTrigger("Death");
+            Death();
             Destroy(this.gameObject, 1.2f);
         }
     }

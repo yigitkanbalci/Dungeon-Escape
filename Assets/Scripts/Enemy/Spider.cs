@@ -21,6 +21,7 @@ public class Spider : Enemy, IDamagable
         if (Health < 1)
         {
             anim.SetTrigger("Death");
+            Death();
             Destroy(this.gameObject, 1.1f);
         }
     }

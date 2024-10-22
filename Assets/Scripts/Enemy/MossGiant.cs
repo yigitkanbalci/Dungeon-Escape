@@ -16,6 +16,7 @@ public class MossGiant : Enemy, IDamagable
         if (Health < 1)
         {
             anim.SetTrigger("Death");
+            Death();
             Destroy(this.gameObject, 1.5f);
         }
     }

@@ -18,6 +18,9 @@ public class Player : MonoBehaviour, IDamagable
     private bool _grounded = false;
     private PlayerAnimation _anim;
 
+    [SerializeField]
+    private int gems;
+
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer _swordArcRenderer;
 
@@ -56,6 +59,12 @@ public class Player : MonoBehaviour, IDamagable
             Destroy(this.gameObject, 1.1f);
         }
         //gameover display
+    }
+
+
+    public void CollectGems(int val)
+    {
+        gems += val;
     }
 
     void MoveCharacter()

@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour
     protected bool isHit = false;
 
     protected Player player;
+    [SerializeField]
+    protected GameObject diamondPrefab;
 
     public virtual void Attack()
     {
@@ -48,6 +50,12 @@ public class Enemy : MonoBehaviour
         }
 
         Movement();
+    }
+
+    public virtual void Death()
+    {
+        GameObject diamond = Instantiate(diamondPrefab, transform.position, Quaternion.identity);
+        diamond.GetComponent<Diamond>().SetAmount(gems);  
     }
 
     public virtual void Movement()
