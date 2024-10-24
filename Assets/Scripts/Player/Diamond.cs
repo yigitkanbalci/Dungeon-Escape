@@ -7,7 +7,7 @@ public class Diamond : MonoBehaviour
 
     private Player _player;
     [SerializeField]
-    private int amount;
+    public int amount;
 
     private void Start()
     {
@@ -16,7 +16,6 @@ public class Diamond : MonoBehaviour
         {
             print("Null");
         }
-        amount = 1;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

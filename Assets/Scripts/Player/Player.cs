@@ -8,7 +8,7 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField]
     private int health;
     private Rigidbody2D _rigid;
-    private float _jumpForce = 6.0f;
+    private float _jumpForce = 6.5f;
     [SerializeField]
     public float speed = 5f; // Increase speed for better movement
     [SerializeField]
@@ -146,5 +146,15 @@ public class Player : MonoBehaviour, IDamagable
         _resetJump = true; // Prevent multiple jumps
         yield return new WaitForSeconds(0.1f); // Small delay before allowing another jump
         _resetJump = false;
+    }
+
+    public int GetGems()
+    {
+        return this.gems;
+    }
+
+    public void SetGems(int val)
+    {
+        this.gems = val;
     }
 }

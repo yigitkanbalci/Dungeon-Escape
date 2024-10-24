@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     protected SpriteRenderer sprite;
 
     protected bool isHit = false;
+    protected bool isDead = false;
 
     protected Player player;
     [SerializeField]
@@ -54,8 +55,9 @@ public class Enemy : MonoBehaviour
 
     public virtual void Death()
     {
-        GameObject diamond = Instantiate(diamondPrefab, transform.position, Quaternion.identity);
-        diamond.GetComponent<Diamond>().SetAmount(gems);  
+        GameObject diamond = (GameObject)Instantiate(diamondPrefab, transform.position, Quaternion.identity);
+        Diamond diamondScript = diamond.GetComponent<Diamond>();
+        diamondScript.SetAmount(gems);
     }
 
     public virtual void Movement()
