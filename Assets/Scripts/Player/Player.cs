@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IDamagable
 
     [SerializeField]
     private int gems;
+    private bool isDead = false;
 
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer _swordArcRenderer;
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour, IDamagable
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _swordArcRenderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
         _rigid.velocity = Vector2.zero;
-        Health = health;
+        Health = 4;
 
     }
 
@@ -51,11 +52,18 @@ public class Player : MonoBehaviour, IDamagable
     {
         print("Health: " + Health);
         Health--;
+        new WaitForSeconds(0.1f); // Small delay before allowing another jump
+        UIManager.Instance.UpdateLives(Health);
         //Play hit animation
         //check health, kill player if less than 0,
         if (Health < 1)
         {
-            _anim.Death();
+            if (!isDead)
+            {
+                _anim.Death();
+            }
+
+            isDead = true;
             Destroy(this.gameObject, 1.1f);
         }
         //gameover display
@@ -65,6 +73,7 @@ public class Player : MonoBehaviour, IDamagable
     public void CollectGems(int val)
     {
         gems += val;
+        UIManager.Instance.UpdateGemCount(gems);
     }
 
     void MoveCharacter()

@@ -65,9 +65,17 @@ public class Shopkeeper : MonoBehaviour
         int gems = _player.GetGems();
         if (gems >= selectedItemCost)
         {
+
+            print(selectedItem);
+            if (selectedItem == 2)
+            {
+                print("here");
+                GameManager.Instance.hasKeyToCastle = true;
+            }
             // Get item
             _player.SetGems(gems - selectedItemCost);
             Debug.Log("Item bought, gems left: " + _player.GetGems());
+
         } else
         {
             //Cannot afford
